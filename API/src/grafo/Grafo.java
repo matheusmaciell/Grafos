@@ -32,9 +32,9 @@ public class Grafo extends JApplet {
 	public static ArrayList<String> t = new ArrayList<String>();
 	public static ArrayList<String> p = new ArrayList<String>();
 
-	private static final Dimension DEFAULT_SIZE = new Dimension(530, 320);
+	private static final Dimension DEFAULT_SIZE = new Dimension(800, 600);
 
-	private JGraphXAdapter<Object, DefaultWeightedEdge> jgxAdapter;
+	private JGraphXAdapter<Object, Edge> jgxAdapter;
 
 	public static ArrayList<String> readFileTXT(String path) throws IOException {
 		ArrayList<String> lines = new ArrayList<String>();
@@ -78,7 +78,7 @@ public class Grafo extends JApplet {
 	public void init() {
 		// create a JGraphT graph
 		try {
-			Graph<Object, DefaultWeightedEdge> multiGraph = createGraph();
+			Graph<Object, Edge> multiGraph = createGraph();
 			
 			jgxAdapter = new JGraphXAdapter<>(multiGraph);
 			
@@ -92,9 +92,9 @@ public class Grafo extends JApplet {
 			mxCircleLayout layout = new mxCircleLayout(jgxAdapter);
 
 			// center the circle
-			int radius = 20;
-			layout.setX0((new Dimension(50, 50).width / 2.0) - radius);
-			layout.setY0((new Dimension(50, 50).height / 2.0) - radius);
+			int radius = 100;
+			layout.setX0((DEFAULT_SIZE.width / 2.0) - radius);
+			layout.setY0((DEFAULT_SIZE.height / 2.0) - radius);
 			layout.setRadius(radius);
 			layout.setMoveCircle(true);
 
@@ -107,14 +107,14 @@ public class Grafo extends JApplet {
 	}
 	
 	
-    private static Graph<Object, DefaultWeightedEdge> createGraph() throws ImportException {
-    	Graph<Object, DefaultWeightedEdge> multiGraph =  GraphTypeBuilder.<Object, DefaultWeightedEdge>undirected().allowingMultipleEdges(true)
-				.allowingSelfLoops(false).edgeClass(DefaultWeightedEdge.class).weighted(true).buildGraph();
+    private static Graph<Object, Edge> createGraph() throws ImportException {
+    	Graph<Object, Edge> multiGraph =  GraphTypeBuilder.<Object, Edge>undirected().allowingMultipleEdges(true)
+				.allowingSelfLoops(false).edgeClass(Edge.class).weighted(true).buildGraph();
     	
 		for (int i = 0; i < s.size(); i++) {
 			multiGraph.addVertex(s.get(i));
 			multiGraph.addVertex(t.get(i));
-			DefaultWeightedEdge edge1 = multiGraph.addEdge(s.get(i), t.get(i));
+			Edge edge1 = multiGraph.addEdge(s.get(i), t.get(i));
 			double d = Double.valueOf(p.get(i));
 			multiGraph.setEdgeWeight(edge1, d);
 			
