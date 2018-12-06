@@ -6,6 +6,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Set;
 
 import javax.swing.JApplet;
 import javax.swing.JFrame;
@@ -99,11 +100,39 @@ public class Grafo extends JApplet {
 			layout.setMoveCircle(true);
 
 			layout.execute(jgxAdapter.getDefaultParent());
+			
+			
+			questao1(multiGraph);
+		
+
 		} catch (ImportException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
+	}
+	
+	
+	private static void questao1(Graph<Object, Edge> multiGraph){
+		Set<Object> vertices = multiGraph.vertexSet();
+		
+		for (Object vertice : vertices) {
+			Set<Edge> arestasQueSaem = multiGraph.outgoingEdgesOf(vertice);
+			
+			Double max = -1.0;
+			Object arestaFinal = null;
+				
+			if (arestasQueSaem.size()  	!= 1) {
+				for (Edge arestaSaida: arestasQueSaem) {						
+					Double aux = multiGraph.getEdgeWeight(arestaSaida);
+					if (aux > max) {
+						arestaFinal = multiGraph.getEdgeTarget(arestaSaida);
+						max = aux;
+					}
+				}
+				System.out.println(arestaFinal);
+			}
+		}
 	}
 	
 	
@@ -119,6 +148,7 @@ public class Grafo extends JApplet {
 			multiGraph.setEdgeWeight(edge1, d);
 			
 		}
+		//multiGraph.edgesOf(multiGraph);
         return multiGraph;
     }
 }
