@@ -22,7 +22,6 @@ import org.jgrapht.io.ImportException;
 import com.mxgraph.layout.mxCircleLayout;
 import com.mxgraph.swing.mxGraphComponent;
 
-
 @SuppressWarnings("deprecation")
 public class Grafo extends JApplet {
 	/**
@@ -59,7 +58,7 @@ public class Grafo extends JApplet {
 	}
 
 	public static void main(String[] args) throws IOException {
-		
+
 		s.addAll(readFileTXT("source.txt"));
 		t.addAll(readFileTXT("target.txt"));
 		p.addAll(readFileTXT("weight.txt"));
@@ -80,15 +79,15 @@ public class Grafo extends JApplet {
 		// create a JGraphT graph
 		try {
 			Graph<Object, Edge> multiGraph = createGraph();
-			
+
 			jgxAdapter = new JGraphXAdapter<>(multiGraph);
-			
+
 			setPreferredSize(DEFAULT_SIZE);
-	        mxGraphComponent component = new mxGraphComponent(jgxAdapter);
-	        component.setConnectable(false);
-	        component.getGraph().setAllowDanglingEdges(false);
-	        getContentPane().add(component);
-	        resize(DEFAULT_SIZE);
+			mxGraphComponent component = new mxGraphComponent(jgxAdapter);
+			component.setConnectable(false);
+			component.getGraph().setAllowDanglingEdges(false);
+			getContentPane().add(component);
+			resize(DEFAULT_SIZE);
 
 			mxCircleLayout layout = new mxCircleLayout(jgxAdapter);
 
@@ -100,10 +99,10 @@ public class Grafo extends JApplet {
 			layout.setMoveCircle(true);
 
 			layout.execute(jgxAdapter.getDefaultParent());
-			
-			
+			System.out.println("Resultado questao 1");
 			questao1(multiGraph);
-		
+			System.out.println("Resultado questao 4");
+			questao4(multiGraph);
 
 		} catch (ImportException e) {
 			// TODO Auto-generated catch block
@@ -111,19 +110,39 @@ public class Grafo extends JApplet {
 		}
 
 	}
-	
-	
-	private static void questao1(Graph<Object, Edge> multiGraph){
+
+	private static void questao4(Graph<Object, Edge> multiGraph) {
 		Set<Object> vertices = multiGraph.vertexSet();
-		
+		Object arestaFinal = null;
+		Double minimo = 100000000.0;
 		for (Object vertice : vertices) {
 			Set<Edge> arestasQueSaem = multiGraph.outgoingEdgesOf(vertice);
-			
+
+			if (arestasQueSaem.size() != 1) {
+				for (Edge arestaSaida : arestasQueSaem) {
+					Double aux = multiGraph.getEdgeWeight(arestaSaida);
+					if (aux < minimo) {
+						arestaFinal = multiGraph.getEdgeTarget(arestaSaida);
+						minimo = aux;
+					}
+				}
+				
+			}
+		}
+		System.out.println(arestaFinal);
+	}
+
+	private static void questao1(Graph<Object, Edge> multiGraph) {
+		Set<Object> vertices = multiGraph.vertexSet();
+
+		for (Object vertice : vertices) {
+			Set<Edge> arestasQueSaem = multiGraph.outgoingEdgesOf(vertice);
+
 			Double max = -1.0;
 			Object arestaFinal = null;
-				
-			if (arestasQueSaem.size()  	!= 1) {
-				for (Edge arestaSaida: arestasQueSaem) {						
+
+			if (arestasQueSaem.size() != 1) {
+				for (Edge arestaSaida : arestasQueSaem) {
 					Double aux = multiGraph.getEdgeWeight(arestaSaida);
 					if (aux > max) {
 						arestaFinal = multiGraph.getEdgeTarget(arestaSaida);
@@ -134,21 +153,20 @@ public class Grafo extends JApplet {
 			}
 		}
 	}
-	
-	
-    private static Graph<Object, Edge> createGraph() throws ImportException {
-    	Graph<Object, Edge> multiGraph =  GraphTypeBuilder.<Object, Edge>undirected().allowingMultipleEdges(true)
+
+	private static Graph<Object, Edge> createGraph() throws ImportException {
+		Graph<Object, Edge> multiGraph = GraphTypeBuilder.<Object, Edge>undirected().allowingMultipleEdges(true)
 				.allowingSelfLoops(false).edgeClass(Edge.class).weighted(true).buildGraph();
-    	
+
 		for (int i = 0; i < s.size(); i++) {
 			multiGraph.addVertex(s.get(i));
 			multiGraph.addVertex(t.get(i));
 			Edge edge1 = multiGraph.addEdge(s.get(i), t.get(i));
 			double d = Double.valueOf(p.get(i));
 			multiGraph.setEdgeWeight(edge1, d);
-			
+
 		}
-		//multiGraph.edgesOf(multiGraph);
-        return multiGraph;
-    }
+		// multiGraph.edgesOf(multiGraph);
+		return multiGraph;
+	}
 }
