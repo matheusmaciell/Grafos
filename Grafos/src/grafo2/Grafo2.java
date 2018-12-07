@@ -99,6 +99,8 @@ public class Grafo2 extends JApplet {
 
 			layout.execute(jgxAdapter.getDefaultParent());
 			questao2(multiGraph);
+			System.out.println("Resultado questao 3");
+			questao3(multiGraph);
 
 		} catch (ImportException e) {
 			// TODO Auto-generated catch block
@@ -128,6 +130,45 @@ public class Grafo2 extends JApplet {
 				System.out.println(arestaFinal);
 			}
 		}
+	}
+
+	private static void questao3(Graph<Object, Edge> multiGraph) {
+		Set <Object> vertices = multiGraph.vertexSet();
+
+		Object proximo = null;
+
+		for (Object vertice : vertices) {
+			proximo = findTheNextOne(vertice, multiGraph);
+			break;
+		}
+		while(findTheNextOne(nextOne)){
+			proximo = findTheNextOne(proximo);
+		}
+
+		System.out.println(proximo);
+
+
+	}
+
+	private Object findTheNextOne(Object verticeAtual, Graph<Object, Edge> multiGraph){
+		Set<Edge> arestasQueSaem = multiGraph.outgoingEdgesOf(verticeAtual);
+
+		Double maximo = -1.0;
+		Object proximoVertice = null;
+
+		if (arestasQueSaem.size() >= 1) {
+			for (Edge arestaSaida : arestasQueSaem) {
+				Double candidato = multiGraph.getEdgeWeight(arestaSaida);
+				if (candidato > maximo) {
+					proximoVertice = multiGraph.getEdgeTarget(arestaSaida);
+					maximo = candidato;
+				}
+			}
+			return proximoVertice;
+		}else{
+			return null;
+		}
+
 	}
 
 	private static Graph<Object, Edge2> createGraph() throws ImportException {
