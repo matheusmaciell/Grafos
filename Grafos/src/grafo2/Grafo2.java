@@ -132,17 +132,17 @@ public class Grafo2 extends JApplet {
 		}
 	}
 
-	private static void questao3(Graph<Object, Edge> multiGraph) {
-		Set <Object> vertices = multiGraph.vertexSet();
+	private static void questao3(Graph<Object, Edge2> multiGraph) {
+		Set<Object> vertices = multiGraph.vertexSet();
 
 		Object proximo = null;
 
 		for (Object vertice : vertices) {
 			proximo = findTheNextOne(vertice, multiGraph);
+			while(findTheNextOne(proximo, multiGraph) != null){
+				proximo = findTheNextOne(proximo, multiGraph);
+			}
 			break;
-		}
-		while(findTheNextOne(nextOne)){
-			proximo = findTheNextOne(proximo);
 		}
 
 		System.out.println(proximo);
@@ -150,14 +150,14 @@ public class Grafo2 extends JApplet {
 
 	}
 
-	private Object findTheNextOne(Object verticeAtual, Graph<Object, Edge> multiGraph){
-		Set<Edge> arestasQueSaem = multiGraph.outgoingEdgesOf(verticeAtual);
+	private static Object findTheNextOne(Object verticeAtual, Graph<Object, Edge2> multiGraph){
+		Set<Edge2> arestasQueSaem = multiGraph.outgoingEdgesOf(verticeAtual);
 
 		Double maximo = -1.0;
 		Object proximoVertice = null;
 
 		if (arestasQueSaem.size() >= 1) {
-			for (Edge arestaSaida : arestasQueSaem) {
+			for (Edge2 arestaSaida : arestasQueSaem) {
 				Double candidato = multiGraph.getEdgeWeight(arestaSaida);
 				if (candidato > maximo) {
 					proximoVertice = multiGraph.getEdgeTarget(arestaSaida);
@@ -165,11 +165,11 @@ public class Grafo2 extends JApplet {
 				}
 			}
 			return proximoVertice;
-		}else{
-			return null;
 		}
+		return proximoVertice;
 
 	}
+
 
 	private static Graph<Object, Edge2> createGraph() throws ImportException {
 		Graph<Object, Edge2> multiGraph = GraphTypeBuilder.<Object, Edge2>undirected().allowingMultipleEdges(true)
