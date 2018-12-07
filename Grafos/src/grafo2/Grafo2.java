@@ -99,8 +99,8 @@ public class Grafo2 extends JApplet {
 
 			layout.execute(jgxAdapter.getDefaultParent());
 			questao2(multiGraph);
-			System.out.println("Resultado questao 3");
-			questao3(multiGraph);
+			//System.out.println("Resultado questao 3");
+			//questao3(multiGraph);
 
 		} catch (ImportException e) {
 			// TODO Auto-generated catch block
