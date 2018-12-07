@@ -30,6 +30,7 @@ public class Grafo2 extends JApplet {
 	public static ArrayList<String> s = new ArrayList<String>();
 	public static ArrayList<String> t = new ArrayList<String>();
 	public static ArrayList<String> p = new ArrayList<String>();
+	private static double media = 0;
 
 	private static final Dimension DEFAULT_SIZE = new Dimension(800, 600);
 
@@ -111,6 +112,8 @@ public class Grafo2 extends JApplet {
 
 	private static void questao2(Graph<Object, Edge2> multiGraph) {
 		
+		
+		
 		Set<Object> vertices = multiGraph.vertexSet();
 
 		for (Object vertice : vertices) {
@@ -130,6 +133,23 @@ public class Grafo2 extends JApplet {
 				System.out.println(arestaFinal);
 			}
 		}
+		System.out.println(getMedia(multiGraph));
+	}
+	
+	public static double getMedia(Graph<Object, Edge2> multiGraph) {
+		
+		Set<Object> vertices = multiGraph.vertexSet();
+		
+		for (Object vertice : vertices) {
+			Set<Edge2> arestasQueSaem = multiGraph.outgoingEdgesOf(vertice);
+			
+			for (Edge2 aresta : arestasQueSaem ) {
+				media += arestasQueSaem.size();
+				
+			}
+		}
+		
+		return media/p.size();
 	}
 
 	private static void questao3(Graph<Object, Edge2> multiGraph) {
@@ -146,11 +166,12 @@ public class Grafo2 extends JApplet {
 		}
 
 		System.out.println(proximo);
-
-
 	}
 
 	private static Object findTheNextOne(Object verticeAtual, Graph<Object, Edge2> multiGraph){
+		
+		double media = 0;
+		
 		Set<Edge2> arestasQueSaem = multiGraph.outgoingEdgesOf(verticeAtual);
 
 		Double maximo = -1.0;
@@ -158,6 +179,7 @@ public class Grafo2 extends JApplet {
 
 		if (arestasQueSaem.size() >= 1) {
 			for (Edge2 arestaSaida : arestasQueSaem) {
+
 				Double candidato = multiGraph.getEdgeWeight(arestaSaida);
 				if (candidato > maximo) {
 					proximoVertice = multiGraph.getEdgeTarget(arestaSaida);
